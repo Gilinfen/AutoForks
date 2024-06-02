@@ -28,7 +28,7 @@ jobs:
           OUTPUT=$(python main.py | sed 's/[^a-zA-Z0-9 ]//g')
           echo "::set-output name=log_output::$OUTPUT"
 
-      - name: Commit and push if changes
+      - name: Always commit and push
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
@@ -36,7 +36,6 @@ jobs:
           BRANCH_NAME="fork-log-$(date +'%Y-%m-%d-%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           COMMIT_MESSAGE="${{ steps.script_run.outputs.log_output }}"
-          git diff --quiet && echo "No changes to commit." && exit 0
-          git commit -am "$COMMIT_MESSAGE"
+          git commit --allow-empty -am "$COMMIT_MESSAGE"
           git push origin "$BRANCH_NAME"
           echo "Pushed changes to $BRANCH_NAME."
