@@ -1,9 +1,8 @@
 name: Run Python Script and Log Results
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 */5 * * *' # 每5小时执行一次，于每小时的0分钟
 
 jobs:
   run-and-log:
@@ -37,7 +36,10 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add logs/*
-          git commit -m "Added execution logs"
+          # 创建一个时间戳
+          TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
+          # 使用时间戳创建提交消息
+          git commit -m "Fork-log-$TIMESTAMP"
           git push
         env:
           PYTHONUNBUFFERED: 1
