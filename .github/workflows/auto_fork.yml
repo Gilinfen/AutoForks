@@ -1,10 +1,5 @@
 name: Auto Fork Workflow
 
-# on:
-#   schedule:
-#     # Runs every 5 hours
-#     - cron: '0 */5 * * *'
-
 on:
   push:
     branches:
@@ -30,7 +25,7 @@ jobs:
       - name: Run the auto fork script and capture output
         id: script_run
         run: |
-          OUTPUT=$(python main.py)
+          OUTPUT=$(python main.py | tr -d '\n')
           echo "::set-output name=log_output::$OUTPUT"
 
       - name: Commit and push if changes
