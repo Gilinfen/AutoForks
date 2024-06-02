@@ -1,4 +1,4 @@
-# 自动 Fork 仓库工具
+# AutoForks
 
 这是一个自动化工具，用于定期从 GitHub 中 fork 感兴趣的仓库。它使用 GitHub Actions 来每隔几小时自动执行 fork 操作，并记录操作结果。
 
