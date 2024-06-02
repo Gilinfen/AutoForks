@@ -32,9 +32,13 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: bearer ${{ secrets.TOKEN }}"
           BRANCH_NAME=fork-log-$(date +'%Y-%m-%d-%H-%M-%S')
           git checkout -b $BRANCH_NAME
           COMMIT_MESSAGE="${{ steps.script_run.outputs.log_output }}"
-          git diff --quiet || git commit -am "$COMMIT_MESSAGE"
-          git push origin $BRANCH_NAME
-          echo "Pushed changes to $BRANCH_NAME."
+          if git diff --quiet; then
+              echo "No changes to commit."
+          else
+              git commit -am "$COMMIT_MESSAGE"
+              git push origin $BRANCH_NAME
+              echo "Pushed changes to $BRANCH_NAME."
