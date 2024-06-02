@@ -49,8 +49,21 @@ def fork_repo(repo_full_name, token, index):
 
 def auto_fork_repos(username, token, forked_repos):
     """Automatically forks a list of repositories and logs each attempt."""
+    log_entries = []
     for index, repo in enumerate(forked_repos):
-        fork_repo(repo, token, index)
+        result = fork_repo(repo, token, index)
+        log_entries.append(result)
+    save_to_md(log_entries)
+
+
+def save_to_md(data):
+    """Save log data to a Markdown file in the logs directory with the current timestamp."""
+    now = datetime.now()
+    filename = f"logs/{now.strftime('%Y-%m-%d-%H-%M-%S')}.md"
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w") as f:
+        for entry in data:
+            f.write(f"{entry}\n")
 
 
 def main():
