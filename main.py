@@ -11,41 +11,28 @@ def get_all_forks(username, token):
     """Retrieve all forked repositories for a given GitHub username."""
     page = 1
     forked_repos = []
-
     while True:
         url = f"https://api.github.com/users/{username}/repos?type=owner&per_page=100&page={page}"
         headers = {"Authorization": f"token {token}"}
         response = requests.get(url, headers=headers)
-
-        # 检查响应状态码
         if response.status_code != 200:
             print(f"Failed to retrieve repos: {response.text}")
             break
-
         repos = response.json()
-
-        # 检查数据类型
-        if not isinstance(repos, list):
-            print(f"Unexpected response format: {repos}")
-            break
-
-        forked_repos.extend([repo["full_name"] for repo in repos if repo["fork"]])
-
         if not repos:
             break
-
+        forked_repos.extend([repo["full_name"] for repo in repos if repo["fork"]])
         page += 1
-
     return forked_repos
 
 
 def fork_repo(repo_full_name, token, index):
     """Fork a specified GitHub repository and log the result."""
-    url = f"https://api.github.com/repos/{repo_full_name}/forks"
-    headers = {"Authorization": f"token {token}"}
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
+        url = f"https://api.github.com/repos/{repo_full_name}/forks"
+        headers = {"Authorization": f"token {token}"}
         response = requests.post(url, headers=headers)
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if response.status_code == 202:
             result = (
                 f"{index + 1}. Successfully forked {repo_full_name} at {current_time}"
@@ -54,6 +41,8 @@ def fork_repo(repo_full_name, token, index):
             result = f"{index + 1}. Failed to fork {repo_full_name}, status code: {response.status_code} at {current_time}"
     except requests.exceptions.RequestException as e:
         result = f"{index + 1}. Request failed for {repo_full_name}, error: {e} at {current_time}"
+    except Exception as e:
+        result = f"{index + 1}. An error occurred: {e} at {current_time}"
     print(result)
     return result
 
