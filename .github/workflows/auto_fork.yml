@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.TOKEN }} # 使用个人访问令牌进行检出
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -39,3 +41,4 @@ jobs:
           git push
         env:
           PYTHONUNBUFFERED: 1
+          GIT_ASKPASS: echo ${{ secrets.TOKEN }}
