@@ -1,9 +1,14 @@
 name: Auto Fork Workflow
 
+# on:
+#   schedule:
+#     # Runs every 5 hours
+#     - cron: '0 */5 * * *'
+
 on:
-  schedule:
-    # Runs every 5 hours
-    - cron: '0 */5 * * *'
+  push:
+    branches:
+      - main
 
 jobs:
   auto-fork:
