@@ -16,12 +16,23 @@ def get_all_forks(username, token):
         url = f"https://api.github.com/users/{username}/repos?type=owner&per_page=100&page={page}"
         headers = {"Authorization": f"token {token}"}
         response = requests.get(url, headers=headers)
+
+        # 检查响应状态码
+        if response.status_code != 200:
+            print(f"Failed to retrieve repos: {response.text}")
+            break
+
         repos = response.json()
 
-        if not repos:
+        # 检查数据类型
+        if not isinstance(repos, list):
+            print(f"Unexpected response format: {repos}")
             break
 
         forked_repos.extend([repo["full_name"] for repo in repos if repo["fork"]])
+
+        if not repos:
+            break
 
         page += 1
 
@@ -56,8 +67,11 @@ def auto_fork_repos(username, token, forked_repos):
 def main():
     username = os.getenv("USERNAME")
     token = os.getenv("TOKEN")
-    forked_repos = get_all_forks(username, token)
-    auto_fork_repos(username, token, forked_repos)
+    try:
+        forked_repos = get_all_forks(username, token)
+        auto_fork_repos(username, token, forked_repos)
+    except Exception as e:
+        print(f"Error during the execution: {e}")
 
 
 if __name__ == "__main__":
