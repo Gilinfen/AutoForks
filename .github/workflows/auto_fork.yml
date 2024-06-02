@@ -23,6 +23,8 @@ jobs:
           pip install requests python-dotenv
 
       - name: Run script and save logs
+        env:
+          PYTHONUNBUFFERED: 1
         run: |
           python main.py
 
@@ -30,6 +32,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add logos/*
+          git add logs/*
           git commit -m "Added execution logs"
           git push
