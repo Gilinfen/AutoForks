@@ -36,10 +36,7 @@ jobs:
           BRANCH_NAME="fork-log-$(date +'%Y-%m-%d-%H-%M-%S')"
           git checkout -b "$BRANCH_NAME"
           COMMIT_MESSAGE="${{ steps.script_run.outputs.log_output }}"
-          git diff --quiet || {
-            echo "No changes to commit."
-            exit 0  # 确保在没有变更的情况下正确结束脚本
-          }
+          git diff --quiet && echo "No changes to commit." && exit 0
           git commit -am "$COMMIT_MESSAGE"
           git push origin "$BRANCH_NAME"
           echo "Pushed changes to $BRANCH_NAME."
