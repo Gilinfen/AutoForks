@@ -26,8 +26,8 @@
 
    - 进入您的仓库设置，点击“Secrets”然后选择“Actions”。
    - 点击“New repository secret”，创建以下两个密钥：
-     - `GITHUB_USERNAME`：您的 GitHub 用户名。
-     - `GITHUB_TOKEN`：您在上一步中生成的 GitHub 访问令牌。
+     - `USERNAME`：您的 GitHub 用户名。
+     - `TOKEN`：您在上一步中生成的 GitHub 访问令牌。
 
 4. **配置工作流**
    - 工作流文件位于`.github/workflows/auto_fork.yml`。

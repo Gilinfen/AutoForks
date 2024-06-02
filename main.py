@@ -54,8 +54,8 @@ def auto_fork_repos(username, token, forked_repos):
 
 
 def main():
-    username = os.getenv("GITHUB_USERNAME")
-    token = os.getenv("GITHUB_TOKEN")
+    username = os.getenv("USERNAME")
+    token = os.getenv("TOKEN")
     forked_repos = get_all_forks(username, token)
     auto_fork_repos(username, token, forked_repos)
 
