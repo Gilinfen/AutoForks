@@ -2,7 +2,7 @@ name: Run Python Script and Log Results
 
 on:
   schedule:
-    - cron: '0 */5 * * *' # 每5小时执行一次，于每小时的0分钟
+    - cron: '0 */12 * * *' # 每12小时执行一次，于每小时的0分钟
 
 jobs:
   run-and-log:
